@@ -1,222 +1,292 @@
 <!doctype html>
 <!--
 =================================================================================
-  PORTFOLIO DE ARTISTA — index.html
+  PORTFOLIO DE ARTISTA — index.html  ·  v2 "Recorrido"
 =================================================================================
-  Estructura del proyecto:
+  El sitio funciona como una muestra que se recorre por salas.
+  Cada <section> tiene un atributo data-room que define su ambiente:
+      data-room="light"  → sala clara (papel)
+      data-room="dark"   → sala oscura (la galería de obras)
+      data-room="blue"   → sala azul cobalto (contacto)
+  Al hacer scroll, el fondo del sitio cambia suavemente entre ambientes.
+  Podés cambiar el ambiente de cualquier sección cambiando ese atributo.
+
+  Estructura del proyecto (sin cambios respecto de la versión anterior):
 
     portfolio/
-    ├── index.html          ← Este archivo: estructura y textos fijos (bio, CV, contacto)
-    ├── css/styles.css      ← Estilos (colores y tipografías se cambian arriba de todo)
-    ├── js/obras.js         ← ★ LISTA DE OBRAS: acá agregás, quitás y reordenás obras
-    ├── js/app.js           ← Lógica (galería, filtros, visor, menú, formulario)
-    ├── img/
-    │   ├── retrato.jpg     ← Tu foto / retrato en el taller (proporción 4:5)
-    │   └── obras/          ← Las fotos de tus obras
-    └── docs/
-        └── cv-lucia-moreno.pdf  ← Tu CV en PDF
+    ├── index.html          ← Estructura y textos fijos (bio, CV, contacto)
+    ├── css/styles.css      ← Estilos (colores de cada sala al principio)
+    ├── js/obras.js         ← ★ LISTA DE OBRAS y fragmentos de texto
+    ├── js/app.js           ← Movimiento, galería, visor, menú, formulario
+    ├── img/retrato.jpg     ← Tu retrato
+    ├── img/obras/          ← Fotos de las obras
+    └── docs/cv-lucia-moreno.pdf
 
-  CÓMO EDITAR LOS TEXTOS DE ESTE ARCHIVO
-  · Buscá los comentarios que empiezan con  ✎ EDITAR  (Ctrl+F / Cmd+F).
-  · Cambiá sólo el texto que está ENTRE las etiquetas, por ejemplo:
-        <p>Este texto se puede cambiar</p>
-    sin borrar los  <p>  ni los  </p>.
-  · "Lucía Moreno" es un nombre de ejemplo: usá "Buscar y reemplazar" de tu
-    editor para cambiarlo por tu nombre en todo el archivo de una sola vez.
+  CÓMO EDITAR LOS TEXTOS
+  · Buscá los comentarios  ✎ EDITAR  (Ctrl+F / Cmd+F).
+  · Cambiá sólo el texto entre etiquetas:  <p>este texto</p>
+  · "Lucía Moreno" es un nombre de ejemplo: usá "Buscar y reemplazar".
+  · Las obras que flotan en la portada se eligen en obras.js (portada: true).
 
-  Para ver el sitio: abrí index.html con doble clic (funciona sin servidor).
+  Abrí index.html con doble clic para verlo (no necesita servidor).
 =================================================================================
 -->
-<html lang="es">
+<html lang="es" data-room="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- ✎ EDITAR: título de la pestaña y descripción que ve Google -->
+  <!-- ✎ EDITAR: título de la pestaña y descripción para Google -->
   <title>Lucía Moreno — Artista visual · Portfolio</title>
   <meta name="description" content="Portfolio de Lucía Moreno, artista visual. Pintura, grabado, dibujo, escultura e instalación. Obra, declaración de artista, CV y contacto.">
   <meta name="author" content="Lucía Moreno">
 
-  <!-- ✎ EDITAR: vista previa al compartir el enlace (WhatsApp, LinkedIn, mail).
-       og:image debería ser una URL completa cuando el sitio esté publicado,
-       ej: https://tusitio.com/img/obras/umbral-i.jpg -->
+  <!-- ✎ EDITAR: vista previa al compartir (usar URL completa al publicar) -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Lucía Moreno — Artista visual">
   <meta property="og:description" content="Pintura, grabado e instalación. Portfolio, CV y contacto.">
   <meta property="og:image" content="img/obras/umbral-i.jpg">
-  <meta name="theme-color" content="#f6f4ef">
+  <meta name="theme-color" content="#eceae4">
 
-  <!-- Tipografías: Instrument Serif (títulos, tono editorial) + Inter (texto, máxima legibilidad).
-       Para cambiarlas, reemplazá este enlace y las variables --font-* en styles.css -->
+  <!-- Tipografías: Instrument Serif (títulos), Inter (texto) e IBM Plex Mono
+       (fichas y rótulos de sala). Para cambiarlas: este enlace + variables --font-* en styles.css -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
-  <!-- Marca que JS está activo (activa las animaciones de aparición sin parpadeo) -->
+  <!-- Marca que JS está activo (evita parpadeos en las animaciones de entrada) -->
   <script>document.documentElement.classList.add("js");</script>
 
-  <!-- Scripts clásicos (no módulos ES) para que el sitio funcione también
-       abriéndolo con doble clic, sin servidor. obras.js DEBE ir antes que app.js. -->
+  <!-- obras.js DEBE cargarse antes que app.js -->
   <script src="js/obras.js" defer></script>
   <script src="js/app.js" defer></script>
 </head>
 
 <body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <a class="skip-link" href="#obras">Saltar a las obras</a>
+
+  <!-- Textura de grano sobre todo el sitio (materialidad de papel/tela). Decorativa. -->
+  <div class="grain" aria-hidden="true"></div>
+  <!-- Cursor personalizado (sólo en computadoras con mouse). Decorativo. -->
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-label">Ver</span></div>
 
   <!-- =========================================================================
-       1. HEADER / NAVEGACIÓN
+       HEADER
        ========================================================================= -->
-  <header class="site-header" id="inicio">
-    <div class="container header-inner">
+  <header class="site-header">
+    <div class="header-inner">
       <a class="brand" href="#inicio" aria-label="Lucía Moreno — volver al inicio">
-        <!-- ✎ EDITAR: tu nombre y disciplina -->
+        <!-- ✎ EDITAR: tu nombre -->
         <span class="brand-name">Lucía Moreno</span>
-        <span class="brand-role">Artista visual · Pintura, grabado e instalación</span>
+        <span class="brand-role">Artista visual</span>
       </a>
 
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Menú</span>
+        <span class="nav-toggle-text">Menú</span>
         <span class="nav-toggle-bars" aria-hidden="true"></span>
       </button>
 
       <nav class="site-nav" id="site-nav" aria-label="Principal">
-        <ul class="nav-list">
-          <li><a href="#obras">Obras</a></li>
-          <li><a href="#statement">Statement</a></li>
-          <li><a href="#cv">CV</a></li>
-          <li><a href="#contacto">Contacto</a></li>
-        </ul>
-        <!-- ✎ EDITAR: ruta de tu CV en PDF. El atributo "download" fuerza la descarga
-             y le pone ese nombre al archivo en la computadora de quien lo baja. -->
-        <a class="btn btn-outline" href="docs/cv-lucia-moreno.pdf" download="CV-Lucia-Moreno.pdf" data-cv-link>
-          Descargar CV <span class="btn-meta">PDF</span>
+        <ol class="nav-list">
+          <li><a href="#obras"><span class="nav-num">01</span>Obras</a></li>
+          <li><a href="#statement"><span class="nav-num">02</span>Artista</a></li>
+          <li><a href="#cv"><span class="nav-num">03</span>Trayectoria</a></li>
+          <li><a href="#contacto"><span class="nav-num">04</span>Contacto</a></li>
+        </ol>
+        <!-- ✎ EDITAR: ruta de tu CV (también en la sección Trayectoria) -->
+        <a class="btn btn-pill" href="docs/cv-lucia-moreno.pdf" download="CV-Lucia-Moreno.pdf" data-cv-link>
+          CV <span class="btn-meta">PDF ↓</span>
         </a>
       </nav>
     </div>
   </header>
 
-  <main id="contenido">
+  <!-- Riel lateral de recorrido (pantallas grandes): indica en qué sala estás -->
+  <nav class="rail" aria-label="Recorrido">
+    <span class="rail-progress" aria-hidden="true"><span class="rail-progress-fill" id="rail-fill"></span></span>
+    <ol>
+      <li><a href="#inicio" aria-label="Inicio"><span>Inicio</span></a></li>
+      <li><a href="#obras" aria-label="Sala 01, Obras"><span>01 Obras</span></a></li>
+      <li><a href="#statement" aria-label="Sala 02, Artista"><span>02 Artista</span></a></li>
+      <li><a href="#cv" aria-label="Sala 03, Trayectoria"><span>03 Trayectoria</span></a></li>
+      <li><a href="#contacto" aria-label="Sala 04, Contacto"><span>04 Contacto</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
 
     <!-- =======================================================================
-         INTRO — una frase que resume tu práctica (se lee antes que la galería)
+         PORTADA — obras flotando alrededor del nombre
+         Las obras flotantes se generan desde obras.js (las que tienen portada: true).
          ======================================================================= -->
-    <section class="intro container" aria-labelledby="intro-title">
-      <!-- ✎ EDITAR: período que abarca el portfolio -->
-      <p class="eyebrow" data-reveal>Portfolio · 2022 — 2026</p>
-      <h1 class="intro-title" id="intro-title" data-reveal>
-        <span class="sr-only">Lucía Moreno, artista visual. </span>
-        <!-- ✎ EDITAR: una o dos líneas sobre tu práctica. La parte entre <em> va en cursiva. -->
-        Pintura, grabado e instalación sobre la <em>memoria de los materiales</em> y los espacios que habitamos.
-      </h1>
-      <!-- ✎ EDITAR: ciudad y disponibilidad -->
-      <p class="intro-meta" data-reveal>Buenos Aires, Argentina — Disponible para exposiciones, residencias y proyectos colaborativos.</p>
+    <section class="hero" id="inicio" data-room="light" aria-labelledby="hero-title">
+      <div class="hero-aura" id="hero-aura" aria-hidden="true"></div>
+      <div class="hero-space" id="hero-space"><!-- obras flotantes (app.js) --></div>
+
+      <div class="hero-content">
+        <!-- ✎ EDITAR: período del portfolio -->
+        <p class="kicker hero-kicker" data-reveal>[ Portfolio — 2022 / 2026 ]</p>
+        <h1 class="hero-title" id="hero-title">
+          <!-- ✎ EDITAR: nombre en dos líneas (la segunda va en cursiva) -->
+          <span class="hero-line" data-reveal>Lucía</span>
+          <span class="hero-line hero-line--italic" data-reveal>Moreno</span>
+        </h1>
+        <!-- ✎ EDITAR: disciplina / frase breve -->
+        <p class="hero-sub" data-reveal>Pintura, grabado e instalación sobre la memoria de los materiales y los espacios que habitamos.</p>
+      </div>
+
+      <!-- ✎ EDITAR: textos verticales laterales -->
+      <p class="vertical-text vertical-text--left" aria-hidden="true">Artista visual — Buenos Aires</p>
+      <p class="vertical-text vertical-text--right" aria-hidden="true">Muestra digital · <span id="hero-count">12</span> obras</p>
+
+      <a class="enter-link" href="#obras">
+        <span class="enter-line" aria-hidden="true"></span>
+        Entrar a la sala
+      </a>
     </section>
 
     <!-- =======================================================================
-         2. GALERÍA DE OBRAS
+         SALA 01 — OBRAS (galería flotante)
          No escribas obras acá: se cargan automáticamente desde js/obras.js
          ======================================================================= -->
-    <section class="section gallery" id="obras" aria-labelledby="obras-title">
+    <section class="room room-works" id="obras" data-room="dark" aria-labelledby="obras-title">
+
+      <!-- Cinta de texto en movimiento. ✎ EDITAR: técnicas o palabras clave -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>Pintura</span><span>Grabado</span><span>Dibujo</span><span>Escultura</span><span>Instalación</span><span>Fotografía</span>
+          <span>Pintura</span><span>Grabado</span><span>Dibujo</span><span>Escultura</span><span>Instalación</span><span>Fotografía</span>
+        </div>
+      </div>
+
       <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" id="obras-title"><span class="section-index" aria-hidden="true">01</span>Obras</h2>
-          <p class="gallery-count" id="gallery-count" aria-live="polite"></p>
+        <div class="room-head">
+          <p class="kicker" data-reveal>[ Sala 01 ]</p>
+          <h2 class="room-title" id="obras-title" data-reveal>Obras <em>seleccionadas</em></h2>
+          <p class="room-note" data-reveal id="gallery-count" aria-live="polite"></p>
         </div>
 
-        <!-- Los botones de filtro se generan según las categorías de obras.js -->
-        <div class="filters" id="filters" role="group" aria-label="Filtrar obras por técnica"></div>
+        <div class="gallery-toolbar" data-reveal>
+          <!-- Filtros (se generan según las categorías de obras.js) -->
+          <div class="filters" id="filters" role="group" aria-label="Filtrar obras por técnica"></div>
+          <!-- Cambio de vista: Sala (recorrido flotante) / Índice (lista rápida para jurados) -->
+          <div class="view-toggle" role="group" aria-label="Vista de la galería">
+            <button type="button" class="view-btn" data-view="sala" aria-pressed="true">Sala</button>
+            <button type="button" class="view-btn" data-view="indice" aria-pressed="false">Índice</button>
+          </div>
+        </div>
 
-        <ul class="gallery-grid" id="gallery" aria-label="Obras"></ul>
+        <!-- Vista "Sala": obras flotando en montaje de salón -->
+        <ul class="salon" id="gallery" aria-label="Obras"></ul>
+
+        <!-- Vista "Índice": listado compacto -->
+        <ol class="index-list" id="index-list" aria-label="Índice de obras" hidden></ol>
 
         <noscript>
           <p class="noscript">Para ver la galería es necesario activar JavaScript en el navegador.</p>
         </noscript>
       </div>
+
+      <!-- Vista previa flotante al pasar el mouse por el índice (decorativa) -->
+      <div class="index-preview" id="index-preview" aria-hidden="true"><img alt=""></div>
     </section>
 
     <!-- =======================================================================
-         3. SOBRE MÍ / ARTIST STATEMENT
+         SALA 02 — LA ARTISTA / STATEMENT
          ======================================================================= -->
-    <section class="section statement" id="statement" aria-labelledby="statement-title">
-      <div class="container statement-grid">
+    <section class="room room-artist" id="statement" data-room="light" aria-labelledby="statement-title">
+      <div class="container">
 
-        <figure class="statement-portrait" data-reveal>
-          <!-- ✎ EDITAR: tu retrato. Reemplazá img/retrato.jpg por tu foto
-               (idealmente vertical 4:5, ej. 1200 × 1500 px) y actualizá el alt y el crédito. -->
-          <img src="img/retrato.jpg" alt="Lucía Moreno trabajando en su taller" width="1200" height="1500" loading="lazy">
-          <figcaption>En el taller, Buenos Aires, 2025. Foto: Nombre del fotógrafo/a.</figcaption>
-        </figure>
+        <!-- Frase grande flotante: cada palabra se mueve a distinta velocidad (app.js).
+             ✎ EDITAR: una frase corta de tu statement -->
+        <p class="float-quote" data-split aria-label="Trabajo con lo que queda.">Trabajo con <em>lo que queda.</em></p>
 
-        <div class="statement-body">
-          <h2 class="section-title" id="statement-title"><span class="section-index" aria-hidden="true">02</span>Sobre mí</h2>
-
-          <!-- ✎ EDITAR: presentación breve en tercera persona (así la pueden citar
-               directamente en catálogos y convocatorias). 60–100 palabras. -->
-          <p class="lead" data-reveal>
-            Lucía Moreno (Buenos Aires, 2001) es estudiante avanzada de la Licenciatura en Artes Visuales.
-            Su práctica se mueve entre la pintura, el grabado y la instalación, y se centra en los rastros
-            que el tiempo deja en los materiales y en los espacios cotidianos.
-          </p>
-
-          <!-- ✎ EDITAR: declaración de artista (Artist Statement), en primera persona.
-               Consejo: 150–300 palabras; qué hacés, cómo y por qué. -->
-          <div class="statement-text" data-reveal>
-            <h3 class="label">Declaración de artista</h3>
-            <blockquote class="statement-quote">
-              <p>Trabajo con lo que queda: la mancha de humedad en una pared, el óxido sobre una placa de cobre, el recuerdo borroso de un rostro.</p>
-            </blockquote>
-            <p>
-              Me interesa el momento en que un material deja de ser neutro y empieza a contar su propia historia.
-              Por eso mis procesos suelen ser lentos y acumulativos: veladuras sucesivas en la pintura, matrices
-              expuestas a la intemperie antes de ser grabadas, dibujos hechos de memoria.
-            </p>
-            <p>
-              Entiendo el taller como un lugar de escucha más que de producción. Muchas de mis obras nacen
-              de conversaciones con vecinas y vecinos, de objetos recuperados en demoliciones o de la observación
-              repetida de un mismo lugar a lo largo de meses.
-            </p>
+        <div class="artist-grid">
+          <div class="artist-visual">
+            <!-- ✎ EDITAR: tu retrato (vertical 4:5) -->
+            <figure class="float-card float-card--portrait" data-depth="0.06">
+              <div class="bob" style="--dur: 11s; --delay: -2s">
+                <img src="img/retrato.jpg" alt="Lucía Moreno trabajando en su taller" width="1200" height="1500" loading="lazy">
+              </div>
+              <figcaption class="mono-caption">En el taller, 2025 · Foto: Nombre del fotógrafo/a</figcaption>
+            </figure>
+            <!-- ✎ EDITAR (opcional): detalle de una obra o del taller que flota junto al retrato -->
+            <figure class="float-card float-card--detail" data-depth="-0.12" aria-hidden="true">
+              <div class="bob" style="--dur: 9s; --delay: -5s">
+                <img src="img/obras/serie-humedad.jpg" alt="" loading="lazy">
+              </div>
+            </figure>
+            <p class="vertical-text vertical-text--inline" aria-hidden="true">[ 02 ] La artista</p>
           </div>
 
-          <!-- ✎ EDITAR: intereses / ejes de investigación. Agregá o quitá <li>. -->
-          <div class="interests" data-reveal>
-            <h3 class="label">Intereses de investigación</h3>
-            <ul class="tag-list">
-              <li>Memoria y archivo</li>
-              <li>Procesos materiales lentos</li>
-              <li>Paisaje urbano</li>
-              <li>Obra sitio-específica</li>
-              <li>Grabado expandido</li>
-              <li>Prácticas comunitarias</li>
-            </ul>
+          <div class="artist-text">
+            <p class="kicker" data-reveal>[ Sala 02 ]</p>
+            <h2 class="room-title" id="statement-title" data-reveal>Sobre <em>mí</em></h2>
+
+            <!-- ✎ EDITAR: presentación breve en tercera persona (60–100 palabras) -->
+            <p class="lead" data-reveal>
+              Lucía Moreno (Buenos Aires, 2001) es estudiante avanzada de la Licenciatura en Artes Visuales.
+              Su práctica se mueve entre la pintura, el grabado y la instalación, y se centra en los rastros
+              que el tiempo deja en los materiales y en los espacios cotidianos.
+            </p>
+
+            <!-- ✎ EDITAR: Artist Statement en primera persona (150–300 palabras) -->
+            <div class="statement-text" data-reveal>
+              <h3 class="kicker">Declaración de artista</h3>
+              <p>
+                Trabajo con lo que queda: la mancha de humedad en una pared, el óxido sobre una placa de cobre,
+                el recuerdo borroso de un rostro. Me interesa el momento en que un material deja de ser neutro
+                y empieza a contar su propia historia.
+              </p>
+              <p>
+                Por eso mis procesos suelen ser lentos y acumulativos: veladuras sucesivas en la pintura, matrices
+                expuestas a la intemperie antes de ser grabadas, dibujos hechos de memoria. Entiendo el taller como
+                un lugar de escucha más que de producción: muchas obras nacen de conversaciones con vecinas y vecinos,
+                de objetos recuperados en demoliciones o de la observación repetida de un mismo lugar.
+              </p>
+            </div>
+
+            <!-- ✎ EDITAR: intereses / ejes de investigación -->
+            <div class="interests" data-reveal>
+              <h3 class="kicker">Intereses de investigación</h3>
+              <ul class="tag-cloud">
+                <li>Memoria y archivo</li>
+                <li>Procesos materiales lentos</li>
+                <li>Paisaje urbano</li>
+                <li>Obra sitio-específica</li>
+                <li>Grabado expandido</li>
+                <li>Prácticas comunitarias</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- =======================================================================
-         4. CV / TRAYECTORIA
-         Cada entrada es un <li> con: año + título + detalle.
-         Para agregar una línea, copiá un <li>…</li> completo y pegalo arriba
-         (lo más reciente primero). Para quitar un bloque entero, borrá desde
-         <div class="cv-block"> hasta su </div> correspondiente.
+         SALA 03 — TRAYECTORIA / CV
+         Cada bloque es una "tarjeta" flotante. Para agregar una línea, copiá un
+         <li>…</li> completo (lo más reciente arriba). Para quitar un bloque,
+         borrá desde <article class="cv-card"> hasta su </article>.
          ======================================================================= -->
-    <section class="section cv" id="cv" aria-labelledby="cv-title">
+    <section class="room room-cv" id="cv" data-room="light" aria-labelledby="cv-title">
       <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" id="cv-title"><span class="section-index" aria-hidden="true">03</span>CV · Trayectoria</h2>
-          <!-- ✎ EDITAR: misma ruta que el botón del header -->
-          <a class="btn btn-outline" href="docs/cv-lucia-moreno.pdf" download="CV-Lucia-Moreno.pdf" data-cv-link>
-            CV completo <span class="btn-meta">PDF</span>
+        <div class="room-head room-head--split">
+          <div>
+            <p class="kicker" data-reveal>[ Sala 03 ]</p>
+            <h2 class="room-title" id="cv-title" data-reveal>Trayec<em>toria</em></h2>
+          </div>
+          <a class="btn btn-pill btn-pill--solid" href="docs/cv-lucia-moreno.pdf" download="CV-Lucia-Moreno.pdf" data-cv-link data-reveal>
+            Descargar CV completo <span class="btn-meta">PDF ↓</span>
           </a>
         </div>
 
-        <div class="cv-grid">
+        <div class="cv-cloud">
 
           <!-- ✎ EDITAR: Formación académica -->
-          <div class="cv-block" data-reveal>
-            <h3 class="cv-heading">Formación académica</h3>
+          <article class="cv-card" data-reveal data-depth="0.04">
+            <h3 class="cv-heading"><span class="cv-num">i.</span> Formación académica</h3>
             <ol class="cv-list">
               <li>
                 <span class="cv-year">2021 — act.</span>
@@ -233,11 +303,11 @@
                 </div>
               </li>
             </ol>
-          </div>
+          </article>
 
           <!-- ✎ EDITAR: Exposiciones individuales -->
-          <div class="cv-block" data-reveal>
-            <h3 class="cv-heading">Exposiciones individuales</h3>
+          <article class="cv-card" data-reveal data-depth="-0.05">
+            <h3 class="cv-heading"><span class="cv-num">ii.</span> Exposiciones individuales</h3>
             <ol class="cv-list">
               <li>
                 <span class="cv-year">2025</span>
@@ -254,11 +324,11 @@
                 </div>
               </li>
             </ol>
-          </div>
+          </article>
 
           <!-- ✎ EDITAR: Exposiciones colectivas -->
-          <div class="cv-block" data-reveal>
-            <h3 class="cv-heading">Exposiciones colectivas</h3>
+          <article class="cv-card" data-reveal data-depth="0.07">
+            <h3 class="cv-heading"><span class="cv-num">iii.</span> Exposiciones colectivas</h3>
             <ol class="cv-list">
               <li>
                 <span class="cv-year">2025</span>
@@ -282,11 +352,11 @@
                 </div>
               </li>
             </ol>
-          </div>
+          </article>
 
           <!-- ✎ EDITAR: Talleres, clínicas y residencias -->
-          <div class="cv-block" data-reveal>
-            <h3 class="cv-heading">Talleres, clínicas y residencias</h3>
+          <article class="cv-card" data-reveal data-depth="-0.03">
+            <h3 class="cv-heading"><span class="cv-num">iv.</span> Talleres, clínicas y residencias</h3>
             <ol class="cv-list">
               <li>
                 <span class="cv-year">2025</span>
@@ -310,11 +380,11 @@
                 </div>
               </li>
             </ol>
-          </div>
+          </article>
 
           <!-- ✎ EDITAR: Premios, becas y menciones -->
-          <div class="cv-block" data-reveal>
-            <h3 class="cv-heading">Premios, becas y menciones</h3>
+          <article class="cv-card" data-reveal data-depth="0.05">
+            <h3 class="cv-heading"><span class="cv-num">v.</span> Premios, becas y menciones</h3>
             <ol class="cv-list">
               <li>
                 <span class="cv-year">2025</span>
@@ -331,11 +401,11 @@
                 </div>
               </li>
             </ol>
-          </div>
+          </article>
 
-          <!-- ✎ EDITAR: Publicaciones y prensa (si todavía no tenés, borrá este bloque completo) -->
-          <div class="cv-block" data-reveal>
-            <h3 class="cv-heading">Publicaciones y prensa</h3>
+          <!-- ✎ EDITAR: Publicaciones y prensa (si no tenés, borrá la tarjeta completa) -->
+          <article class="cv-card" data-reveal data-depth="-0.06">
+            <h3 class="cv-heading"><span class="cv-num">vi.</span> Publicaciones y prensa</h3>
             <ol class="cv-list">
               <li>
                 <span class="cv-year">2025</span>
@@ -352,30 +422,32 @@
                 </div>
               </li>
             </ol>
-          </div>
+          </article>
 
         </div>
       </div>
     </section>
 
     <!-- =======================================================================
-         5. CONTACTO
+         SALA 04 — CONTACTO (sala azul)
          ======================================================================= -->
-    <section class="section contact" id="contacto" aria-labelledby="contacto-title">
+    <section class="room room-contact" id="contacto" data-room="blue" aria-labelledby="contacto-title">
+      <!-- Obras pequeñas flotando de fondo (se generan desde obras.js, decorativas) -->
+      <div class="contact-drift" id="contact-drift" aria-hidden="true"></div>
+
       <div class="container contact-grid">
-
         <div class="contact-info">
-          <h2 class="section-title" id="contacto-title"><span class="section-index" aria-hidden="true">04</span>Contacto</h2>
+          <p class="kicker" data-reveal>[ Sala 04 ]</p>
+          <h2 class="room-title room-title--xl" id="contacto-title" data-reveal>Hable<em>mos</em></h2>
           <!-- ✎ EDITAR -->
-          <p class="lead" data-reveal>Para exposiciones, residencias, convocatorias, adquisición de obra o colaboraciones, escribime y respondo a la brevedad.</p>
+          <p class="lead" data-reveal>Para exposiciones, residencias, convocatorias, adquisición de obra o colaboraciones.</p>
 
-          <!-- ✎ EDITAR: tu email (aparece en dos lugares: href y texto) -->
+          <!-- ✎ EDITAR: tu email (en href y en el texto) -->
           <p class="contact-mail" data-reveal>
             <a href="mailto:hola@luciamoreno.art">hola@luciamoreno.art</a>
           </p>
 
-          <!-- ✎ EDITAR: tus redes. Reemplazá cada "https://…" por tu enlace real.
-               Si no usás alguna, borrá su <li> completo. -->
+          <!-- ✎ EDITAR: tus redes (borrá el <li> de las que no uses) -->
           <ul class="social-list" data-reveal aria-label="Redes y plataformas">
             <li><a href="https://instagram.com/tu_usuario" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a></li>
             <li><a href="https://www.linkedin.com/in/tu-usuario" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a></li>
@@ -385,16 +457,14 @@
         </div>
 
         <!-- ---------------------------------------------------------------------
-             FORMULARIO (sin backend) — CONFIGURACIÓN CON FORMSPREE (gratis):
+             FORMULARIO (sin backend) — FORMSPREE:
              1. Creá una cuenta en https://formspree.io y un formulario nuevo.
-             2. Formspree te da una URL tipo  https://formspree.io/f/abcdwxyz
-             3. Pegala en el atributo action de abajo, reemplazando TU_CODIGO.
-             Listo: los mensajes te llegan por mail. app.js envía el formulario
-             sin recargar la página y muestra el mensaje de éxito o error.
-
+             2. Copiá la URL que te da (tipo https://formspree.io/f/abcdwxyz).
+             3. Pegala en action="" reemplazando TU_CODIGO.
              ¿Preferís EmailJS? Mirá la sección "FORMULARIO" en js/app.js.
              --------------------------------------------------------------------- -->
-        <form class="contact-form" id="contact-form" action="https://formspree.io/f/TU_CODIGO" method="POST" novalidate data-reveal>
+        <form class="contact-form" id="contact-form" action="https://formspree.io/f/TU_CODIGO" method="POST" novalidate data-reveal data-depth="0.04">
+          <p class="form-title mono-caption">Formulario de contacto</p>
           <div class="field">
             <label for="f-nombre">Nombre</label>
             <input id="f-nombre" name="nombre" type="text" autocomplete="name" required>
@@ -403,7 +473,7 @@
             <label for="f-email">Email</label>
             <input id="f-email" name="email" type="email" autocomplete="email" required>
           </div>
-          <div class="field">
+          <div class="field field-full">
             <!-- ✎ EDITAR: motivos de consulta -->
             <label for="f-motivo">Motivo</label>
             <select id="f-motivo" name="motivo">
@@ -417,11 +487,10 @@
           </div>
           <div class="field field-full">
             <label for="f-mensaje">Mensaje</label>
-            <textarea id="f-mensaje" name="mensaje" rows="5" required></textarea>
+            <textarea id="f-mensaje" name="mensaje" rows="4" required></textarea>
           </div>
 
-          <!-- Anti-spam: campo invisible. Los bots lo completan, las personas no.
-               Formspree descarta automáticamente los envíos con "_gotcha" lleno. -->
+          <!-- Anti-spam invisible (Formspree descarta envíos con "_gotcha" lleno) -->
           <div class="hp" aria-hidden="true">
             <label for="f-gotcha">No completar</label>
             <input id="f-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
@@ -429,32 +498,34 @@
           <input type="hidden" name="_subject" value="Nuevo mensaje desde el portfolio">
 
           <div class="form-footer field-full">
-            <button class="btn btn-solid" type="submit">Enviar mensaje</button>
+            <button class="btn btn-pill btn-pill--light" type="submit">Enviar mensaje <span aria-hidden="true">→</span></button>
             <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
           </div>
         </form>
       </div>
+
+      <!-- FOOTER (dentro de la sala azul) -->
+      <footer class="site-footer">
+        <div class="marquee marquee--footer" aria-hidden="true">
+          <div class="marquee-track">
+            <!-- ✎ EDITAR: texto de despedida -->
+            <span>Gracias por el recorrido</span><span>Lucía Moreno</span>
+            <span>Gracias por el recorrido</span><span>Lucía Moreno</span>
+          </div>
+        </div>
+        <div class="container footer-inner">
+          <p>© <span id="year">2026</span> Lucía Moreno. Todas las imágenes pertenecen a la artista; su reproducción requiere autorización.</p>
+          <a class="text-link" href="#inicio">Volver al inicio ↑</a>
+        </div>
+      </footer>
     </section>
   </main>
 
   <!-- =========================================================================
-       FOOTER
-       ========================================================================= -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <!-- El año se actualiza solo (app.js) -->
-      <p>© <span id="year">2026</span> Lucía Moreno. Todas las imágenes pertenecen a la artista; su reproducción requiere autorización.</p>
-      <a class="text-link" href="#inicio">Volver arriba ↑</a>
-    </div>
-  </footer>
-
-  <!-- =========================================================================
-       VISOR DE OBRAS (LIGHTBOX)
-       Se rellena desde app.js con los datos de obras.js. No hace falta editarlo.
-       <dialog> es el elemento nativo de HTML para ventanas modales: gestiona
-       el foco del teclado y el cierre con Escape de forma accesible.
+       VISOR DE OBRAS (LIGHTBOX) — se rellena desde app.js. No hace falta editarlo.
        ========================================================================= -->
   <dialog class="lightbox" id="lightbox" aria-labelledby="lb-title" aria-describedby="lb-desc">
+    <div class="lb-aura" id="lb-aura" aria-hidden="true"></div>
     <div class="lb-layout">
       <div class="lb-controls">
         <p class="lb-counter" id="lb-counter" aria-live="polite"></p>
@@ -470,13 +541,16 @@
           </button>
         </div>
       </div>
+
       <div class="lb-stage" id="lb-stage">
-        <img class="lb-img" id="lb-img" alt="">
+        <div class="lb-float">
+          <img class="lb-img" id="lb-img" alt="">
+        </div>
         <span class="lb-loader" aria-hidden="true"></span>
       </div>
 
       <aside class="lb-info">
-        <p class="eyebrow" id="lb-cat"></p>
+        <p class="kicker" id="lb-cat"></p>
         <h2 class="lb-title" id="lb-title"></h2>
         <dl class="lb-ficha">
           <div><dt>Año</dt><dd id="lb-anio"></dd></div>
@@ -487,7 +561,6 @@
         <div class="lb-desc" id="lb-desc"></div>
         <a class="text-link lb-original" id="lb-original" href="#" target="_blank" rel="noopener">Ver imagen en alta resolución ↗</a>
       </aside>
-
     </div>
   </dialog>
 </body>

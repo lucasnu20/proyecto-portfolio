@@ -46,6 +46,10 @@
                   Si no está, se arma con título + técnica.
    serie          Nombre de la serie a la que pertenece.
    destacada      true → la obra ocupa 2 columnas en pantallas grandes.
+   portada        true → la obra "flota" en la portada (hero) del sitio.
+                  Se usan hasta 6; si ninguna tiene portada, se toman las 6 primeras.
+   sin_marco      true → se muestra sin passe-partout (útil para instalaciones
+                  o fotos de sala, que ya tienen su propio contexto).
 
    ─────────────────────────────────────────────────────────────────────────────
    REORDENAR / QUITAR
@@ -62,6 +66,7 @@
 const OBRAS = [
   {
     id: "umbral-i",
+    portada: true,
     titulo: "Umbral I",
     anio: 2025,
     tecnica: "Óleo sobre tela",
@@ -74,6 +79,7 @@ const OBRAS = [
   },
   {
     id: "cartografia-de-lo-que-queda",
+    sin_marco: true,
     titulo: "Cartografía de lo que queda",
     anio: 2024,
     tecnica: "Instalación: hilo de algodón, clavos y papel",
@@ -98,6 +104,7 @@ const OBRAS = [
   },
   {
     id: "retrato-de-mi-abuela",
+    portada: true,
     titulo: "Retrato de mi abuela como paisaje",
     anio: 2023,
     tecnica: "Carbonilla y goma sobre papel",
@@ -109,6 +116,7 @@ const OBRAS = [
   },
   {
     id: "pieza-para-sostener-el-silencio",
+    portada: true,
     titulo: "Pieza para sostener el silencio",
     anio: 2025,
     tecnica: "Gres esmaltado y hierro",
@@ -143,6 +151,7 @@ const OBRAS = [
   },
   {
     id: "xilografia-para-un-rio",
+    portada: true,
     titulo: "Xilografía para un río",
     anio: 2022,
     tecnica: "Xilografía sobre papel japonés",
@@ -155,6 +164,7 @@ const OBRAS = [
   },
   {
     id: "casa-tomada",
+    portada: true,
     titulo: "Casa tomada",
     anio: 2024,
     tecnica: "Acrílico y collage sobre madera",
@@ -188,6 +198,7 @@ const OBRAS = [
   },
   {
     id: "serie-ventanas-3",
+    portada: true,
     titulo: "Serie Ventanas #3",
     anio: 2023,
     tecnica: "Fotografía analógica 35 mm, copia en gelatina de plata digitalizada",
@@ -226,4 +237,16 @@ const ORDEN_CATEGORIAS = [
   "Grabado",
   "Instalación",
   "Fotografía"
+];
+
+/* FRAGMENTOS DE TEXTO (opcional)
+   Frases breves que "flotan" entre las obras de la sala, como en una muestra
+   donde los textos de sala conviven con las piezas. Se intercalan cada 4 obras
+   y sólo aparecen con el filtro "Todas". Para no mostrar ninguno, dejá la lista vacía: [ ].
+   · texto: la frase (breve: 1–3 líneas).
+   · firma: opcional (fuente, año, obra a la que refiere…). */
+const FRAGMENTOS = [
+  { texto: "Trabajo con lo que queda: la mancha, el óxido, el recuerdo borroso de un rostro.", firma: "Declaración de artista, 2025" },
+  { texto: "El taller es un lugar de escucha más que de producción." },
+  { texto: "Un material deja de ser neutro cuando empieza a contar su propia historia.", firma: "Notas de taller" }
 ];
